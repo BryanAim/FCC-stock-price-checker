@@ -9,6 +9,11 @@ var apiRoutes         = require('./routes/api.js');
 var fccTestingRoutes  = require('./routes/fcctesting.js');
 var runner            = require('./test-runner');
 const helmet = require('helmet');
+const MongoClient = require('mongodb').MongoClient;
+
+require("dotenv").config();
+const CONNECTION_STRING = process.env.DB;
+
 
 
 var app = express();
@@ -34,6 +39,15 @@ fccTestingRoutes(app);
 
 //Routing for API 
 apiRoutes(app);  
+
+  MongoClient.connect(CONNECTION_STRING)
+  .then(client=> {
+    let db = client.db('stocks-ips');
+    let collection = db.collection('stock-ips');
+    app.locals.collection = collection;
+    app.locals.db = db;
+  }).catch(error => console.log(error)
+  );
     
 //404 Not Found Middleware
 app.use(function(req, res, next) {
