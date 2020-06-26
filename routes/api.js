@@ -17,7 +17,7 @@ const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRIN
 
 module.exports = function (app) {
 
-  const stockHandler = new stockHandler();
+  const stockHandler = new StockHandler();
 
   app.route('/api/stock-prices')
     .get(function (req, res){
