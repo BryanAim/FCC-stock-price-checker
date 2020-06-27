@@ -50,6 +50,16 @@ suite('Functional Tests', function() {
       });
       
       test('1 stock with like again (ensure likes arent double counted)', function(done) {
+        chai.request(server)
+        .get('api/stock-prices')
+        .query({stock: 'goog', likes: true})
+        .end(function (err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.stockData.stock, 'GOOG');
+          assert.equal(res.stockData.likes, 'likes');
+          assert.property(res.body.stockData, 'price');
+          done();
+        })
         
       });
       
