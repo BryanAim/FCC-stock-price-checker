@@ -24,7 +24,10 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           
           //complete this one too
-          
+          assert.equal(res.status, 200);
+          assert.equal(res.body.stockData.stock, 'GOOG', 'should retrieve stock name');
+          assert.property(res.body.stockData, 'price', 'shoild have _id property');
+          assert.property(res.body.stockData, 'likes', 'stock should have likes property');
           done();
         });
       });
