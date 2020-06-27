@@ -62,8 +62,26 @@ suite('Functional Tests', function() {
         })
         
       });
+
+      let rel_likes;
       
       test('2 stocks', function(done) {
+        chai.request(server)
+        .get('api/stock-prices')
+        .query({stock: ['goog', 'msft']})
+        .end(function (err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.stockData[0].stock, 'GOOG');
+          res.equal(res.body.stockData[1].stock, 'MSFT');
+          assert.property(res.body.stockData[0], 'rel_likes');
+          assert.property(res.body.stockData[0], 'price');
+          assert.property(res.body.stockData[1], 'rel_likes');
+          assert.property(res.body.stockData[1], 'price');
+          assert.equal(res.body.stockData[0].rel_likes - res.body.stockData[1].rel_likes, 0)
+          rel_likes = res.body.stockData[0].rel_likes;
+          done();
+        })
+
         
       });
       
