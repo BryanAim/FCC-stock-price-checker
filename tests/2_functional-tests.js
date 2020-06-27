@@ -32,7 +32,20 @@ suite('Functional Tests', function() {
         });
       });
       
+      let likes;
+
       test('1 stock with like', function(done) {
+        chai.request(server)
+        .get('api/stock-prices')
+        .query({stock: 'goog', likes: true})
+        .end(function (err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.stockData.stock, 'GOOG');
+          assert.equal(res.body.stockData.likes, 1);
+          assert.property(res.body.stockData, 'price');
+          likes = res.body.stockData.likes;
+          done()
+        })
         
       });
       
